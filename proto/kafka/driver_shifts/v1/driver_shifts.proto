@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package driver_shifts.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/taxibeat/core-business/proto/kafka/driver_shifts/v1";
+
+// DriverShifts is an event produced when we have driver shifts that are going to start soon
+message DriverShifts{
+  // driver_shifts is an array of DriverShift messages
+  repeated DriverShift driver_shifts = 1;
+}
+
+// DriverShift is an entity that defines the contents of a driver shift
+message DriverShift{
+  // city_id is the id of the city
+  int32 city_id = 1;
+  // driver_shift_id is the id of the driver_shift
+  int32 driver_shift_id = 2;
+  // shift_id is the id of the shift
+  int32 shift_id = 3;
+  // driver_id is the id of the driver
+  int32 driver_id = 4;
+  // vehicle_assigned indicates if there is a vehicle assigned in the driver_shift
+  bool vehicle_assigned = 5;
+  // type is a ShiftType enumerator that flags the type of the particulat driver_shift
+  ShiftType type = 6;
+  // shift_start_datetime is the datetime of the start time of the shift
+  google.protobuf.Timestamp shift_start_datetime = 7;
+  // shift_end_datetime is the datetime of the end time of the shift
+  google.protobuf.Timestamp shift_end_datetime = 8;
+  // driver_first_name is the first name of the driver
+  string driver_first_name = 9;
+  // driver_last_name is the last name of the driver
+  string driver_last_name = 10;
+
+  // ShiftType indicates the possible driver shift types i.e. scheduled or buffered
+  enum ShiftType {
+    // VEHICLE_STATE_UNSPECIFIED stands for the unspecified shift type
+    SHIFT_TYPE_UNSPECIFIED = 0;
+    // SHIFT_TYPE_SCHEDULED stands for the type of a driver shift that is sheduled (normal)
+    SHIFT_TYPE_SCHEDULED = 1;
+    // SHIFT_TYPE_BUFFERED stands for the type of a driver shift that is a buffered
+    SHIFT_TYPE_BUFFERED = 2;
+  }
+}
